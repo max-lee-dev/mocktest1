@@ -7,18 +7,10 @@ export default function Home() {
     <main className="container mx-auto">
       <h1>Hello World</h1>
       <div>
-        <button
-          onClick={() => {
-            signInAnonymously(auth).then((user) => {
-              console.log(user);
-            });
-          }}
-        >
-          Sign in
-        </button>
+
       </div>
     </main>
-  );
+  ); ''
 }
 
 
