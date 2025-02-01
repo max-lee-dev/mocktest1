@@ -1,7 +1,7 @@
 "use client";
 import { BackgroundDecorations } from "./components/Decorations/decorations";
 import StoriesRow from "./components/Stories/StoriesRow";
-import PostsList from "./components/Posts/PostsList";
+import PostsList from "./components/PostComponents/PostsList";
 import Navbar from "./components/Navbar/Navbar";
 import StoriesRowSkeleton from "./components/Skeletons/StoriesRowSkeleton";
 import PostsListSkeleton from "./components/Skeletons/PostsListSkeleton";

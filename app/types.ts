@@ -12,12 +12,14 @@ export interface Story {
 }
 
 export interface Post {
-  id: number;
+  id: string;
+  userId: string;
   username: string;
-  avatar: string;
-  image: string;
-  likes: number;
+  userAvatar: string;
+  imageUrl: string;
   caption: string;
+  likes: number;
+  createdAt: any; // Firestore Timestamp
 }
 
 export interface NavbarProps {
