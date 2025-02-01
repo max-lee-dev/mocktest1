@@ -13,6 +13,15 @@ export interface Story {
   avatar: string;
 }
 
+export interface Comment {
+  id: string;
+  userId: string;
+  username: string;
+  userAvatar: string;
+  text: string;
+  createdAt: Timestamp;
+}
+
 export interface Post {
   id: string;
   userId: string;
@@ -21,7 +30,8 @@ export interface Post {
   imageUrl: string;
   caption: string;
   likes: number;
-  likedBy: string[];  // Array of user IDs who liked the post
+  likedBy: string[];
+  comments: Comment[];
   createdAt: Timestamp;
 }
 

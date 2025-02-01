@@ -6,7 +6,7 @@ service cloud.firestore {
       allow create: if request.auth != null;
       allow update: if request.auth != null && 
         (request.resource.data.diff(resource.data).affectedKeys()
-        .hasOnly(['likes', 'likedBy']));
+        .hasOnly(['likes', 'likedBy', 'comments']));
       allow delete: if request.auth != null && 
         request.auth.uid == resource.data.userId;
     }

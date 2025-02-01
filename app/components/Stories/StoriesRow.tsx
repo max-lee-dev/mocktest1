@@ -1,21 +1,47 @@
-import { StoriesRowProps } from "@/app/types";
-import StoryIcon from './StoryIcon';
+"use client";
 import Image from 'next/image';
+import SkeletonProfile from '../Skeletons/SkeletonProfile';
 
-export default function StoriesRow({ stories }: StoriesRowProps) {
+interface Story {
+  id: number;
+  username: string;
+  avatar: string;
+}
+
+interface StoriesRowProps {
+  stories: Story[];
+  loading?: boolean;
+}
+
+export default function StoriesRow({ stories, loading = true }: StoriesRowProps) {
+  if (loading) {
+    return (
+      <div className="relative mb-8">
+        <div className="flex gap-4 overflow-x-auto pb-4">
+          {[1, 2, 3, 4, 5].map((id) => (
+            <SkeletonProfile key={id} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative mb-8">
-      <div className="absolute inset-0 bg-[#B5F1CC] opacity-10 rounded-xl" />
-      <div className="flex gap-4 overflow-x-auto pb-4 relative">
+      <div className="flex gap-4 overflow-x-auto pb-4">
         {stories.map((story) => (
-          <Image
-            key={story.id}
-            src={story.avatar || '/images/default-avatar.png'}
-            alt={story.username || 'User story'}
-            width={56}
-            height={56}
-            className="w-14 h-14 rounded-full border-2 border-black"
-          />
+          <div key={story.id} className="flex flex-col items-center gap-1">
+            <Image
+              src={story.avatar || '/images/default-avatar.png'}
+              alt={story.username || 'User story'}
+              width={56}
+              height={56}
+              className="w-14 h-14 rounded-full border-2 border-black"
+            />
+            <span className="text-xs font-medium truncate w-14 text-center">
+              {story.username}
+            </span>
+          </div>
         ))}
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { db, storage } from './firebase';
 import { collection, addDoc, serverTimestamp, query, where, orderBy, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { User, Post, UserDocument } from '../types';
+import { User, Post, UserDocument, Comment } from '../types';
 import { Timestamp } from 'firebase/firestore';
 
 export async function createPost(imageFile: Blob, caption: string, user: User) {
@@ -108,4 +108,47 @@ export async function isPostLiked(postId: string, userId: string): Promise<boole
 
   const post = postDoc.data();
   return post.likedBy?.includes(userId) ?? false;
+}
+
+export async function addComment(
+  postId: string,
+  userId: string,
+  username: string,
+  userAvatar: string,
+  text: string
+): Promise<void> {
+  const newComment: Comment = {
+    id: crypto.randomUUID(),
+    userId,
+    username,
+    userAvatar,
+    text,
+    createdAt: Timestamp.now(),
+  };
+
+  const postRef = doc(db, 'posts', postId);
+  await updateDoc(postRef, {
+    comments: arrayUnion(newComment)
+  });
+}
+
+export async function deleteComment(
+  postId: string,
+  commentId: string
+): Promise<void> {
+  const postRef = doc(db, 'posts', postId);
+  const postDoc = await getDoc(postRef);
+
+  if (!postDoc.exists()) return;
+
+  const post = postDoc.data();
+  const commentToDelete = post.comments.find(
+    (comment: Comment) => comment.id === commentId
+  );
+
+  if (commentToDelete) {
+    await updateDoc(postRef, {
+      comments: arrayRemove(commentToDelete)
+    });
+  }
 } 
