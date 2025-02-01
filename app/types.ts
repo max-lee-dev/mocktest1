@@ -21,6 +21,7 @@ export interface Post {
   imageUrl: string;
   caption: string;
   likes: number;
+  likedBy: string[];  // Array of user IDs who liked the post
   createdAt: Timestamp;
 }
 
@@ -58,4 +59,16 @@ export interface PostButtonsProps {
   onLike?: () => void;
   onComment?: () => void;
   onShare?: () => void;
+}
+
+export interface UserDocument {
+  uid: string;
+  displayName: string | null;
+  photoURL: string | null;
+  email: string | null;
+  followers: number;
+  following: number;
+  bio: string;
+  createdAt: Timestamp;
+  // Add any other fields you want to track
 } 

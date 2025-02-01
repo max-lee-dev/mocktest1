@@ -26,7 +26,7 @@ export default function NewPostPage() {
     try {
       setUploading(true);
       await createPost(image, caption, user);
-      router.push("/profile");
+      router.push(`/profile/${user.uid}`);
     } catch (error) {
       console.error("Error creating post:", error);
     } finally {
@@ -43,7 +43,6 @@ export default function NewPostPage() {
             Create New Post
           </h1>
           <ImageUpload
-            image={image}
             setImage={setImage}
             previewUrl={previewUrl}
             setPreviewUrl={setPreviewUrl}

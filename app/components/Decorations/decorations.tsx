@@ -35,11 +35,6 @@ export const DecorativeCircle = ({ className }: { className?: string }) => (
   <div className={`${className} bg-[#E8A0BF] rounded-full opacity-20`} />
 );
 
-export const BackgroundDecorations = () => (
-  <div className="fixed inset-0 -z-10 overflow-hidden">
-    <Squiggle className="absolute top-20 left-10 w-24 h-24 text-[#FF8FB1]" />
-    <DotPattern className="absolute top-40 right-20 w-32 h-32 text-[#B5F1CC]" />
-    <Zigzag className="absolute bottom-20 left-40 w-32 h-32 text-[#FFD93D]" />
-    <DecorativeCircle className="absolute -bottom-20 -right-20 w-64 h-64" />
-  </div>
-); 
+export function BackgroundDecorations() {
+  return null;
+} 

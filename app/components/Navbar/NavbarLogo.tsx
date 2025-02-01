@@ -5,7 +5,7 @@ export default function NavbarLogo() {
 
   return (
     <div className="relative cursor-pointer hover:scale-105 transition-transform" onClick={() => router.push('/')}>
-      <h1 className="text-4xl font-bold text-primary bg-clip-text text-transparent">
+      <h1 className="text-4xl text-primary font-bold text-primary bg-clip-text ">
         maxgram
       </h1>
     </div>

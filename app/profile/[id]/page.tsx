@@ -1,30 +1,34 @@
 "use client";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Post } from "@/app/types";
-import PostCard from "@/app/components/PostComponents/PostCard";
+import { User } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/app/utils/firebase";
 import Navbar from "@/app/components/Navbar/Navbar";
+import ProfileHeader from "@/app/components/Profile/ProfileHeader";
+import ProfilePosts from "@/app/components/Profile/ProfilePosts";
 import { useAuth } from "@/app/context/AuthContext";
-import { getPost } from "@/app/utils/firebaseUtils";
 
-export default function PostPage() {
+export default function ProfilePage() {
   const params = useParams();
-  const postId = params?.id as string;
+  const userId = params?.id as string;
   const { user } = useAuth();
-  const [post, setPost] = useState<Post | null>(null);
+  const [profileUser, setProfileUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadPost() {
-      if (postId) {
-        const fetchedPost = await getPost(postId);
-        setPost(fetchedPost);
+    async function loadProfile() {
+      if (userId) {
+        const userDoc = await getDoc(doc(db, "users", userId));
+        if (userDoc.exists()) {
+          setProfileUser(userDoc.data() as User);
+        }
       }
       setLoading(false);
     }
 
-    loadPost();
-  }, [postId]);
+    loadProfile();
+  }, [userId]);
 
   if (loading) {
     return (
@@ -37,13 +41,13 @@ export default function PostPage() {
     );
   }
 
-  if (!post) {
+  if (!profileUser) {
     return (
       <div className="min-h-screen bg-surface">
         <div className="max-w-2xl mx-auto p-4">
           <Navbar user={user} loading={loading} />
           <div className="bg-white rounded-xl p-8 text-center">
-            <h1 className="text-2xl font-bold">Post not found</h1>
+            <h1 className="text-2xl font-bold">Profile not found</h1>
           </div>
         </div>
       </div>
@@ -54,7 +58,8 @@ export default function PostPage() {
     <div className="min-h-screen bg-surface">
       <div className="max-w-2xl mx-auto p-4">
         <Navbar user={user} loading={loading} />
-        <PostCard post={post} />
+        <ProfileHeader user={profileUser} isOwnProfile={user?.uid === userId} />
+        <ProfilePosts userId={userId} />
       </div>
     </div>
   );

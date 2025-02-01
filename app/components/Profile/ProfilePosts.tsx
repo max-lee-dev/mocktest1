@@ -6,8 +6,9 @@ import { Post } from '@/app/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/app/context/AuthContext';
+import NewPost from './NewPost';
 
-export default function ProfilePosts() {
+export default function ProfilePosts({ userId }: { userId: string }) {
   const [posts, setPosts] = useState<Post[]>([]);
   const { user } = useAuth();
 
@@ -15,7 +16,7 @@ export default function ProfilePosts() {
     if (!user?.uid) return;
 
     const fetchPosts = async () => {
-      const q = await getUserPosts(user.uid);
+      const q = await getUserPosts(userId);
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const newPosts = snapshot.docs.map(doc => ({
           id: doc.id,
@@ -35,7 +36,14 @@ export default function ProfilePosts() {
 
   return (
     <div className="grid grid-cols-3 gap-4">
-
+      {posts.length === 0 && (
+        <div className="col-span-3 text-center text-gray-500">
+          No posts yet
+        </div>
+      )}
+      {user?.uid === userId && (
+        <NewPost />
+      )}
       {posts.map((post) => (
         <Link key={post.id} href={`/post/${post.id}`} className="aspect-square">
           <Image

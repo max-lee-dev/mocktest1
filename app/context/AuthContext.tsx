@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../utils/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { User } from "../types";
+import { createUserDocument } from '../utils/firebaseUtils';
 
 interface AuthContextType {
   user: User | null;
@@ -19,7 +20,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await createUserDocument(user as User);  // Create user document if it doesn't exist
+      }
       setUser(user as User);
       setLoading(false);
     });
