@@ -1,33 +1,51 @@
-import { Post } from "@/app/types";
-import NewPost from "./NewPost";
-
-const mockProfilePosts: Post[] = [
-  {
-    id: 1,
-    username: "user",
-    avatar: "https://i.pravatar.cc/150?img=1",
-    image: "https://picsum.photos/300/300?random=1",
-    likes: 123,
-    caption: "My first post!"
-  },
-  // Add more mock posts as needed
-];
+"use client";
+import { useState, useEffect } from 'react';
+import { onSnapshot } from 'firebase/firestore';
+import { getUserPosts } from '@/app/utils/firebaseUtils';
+import { Post } from '@/app/types';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useAuth } from '@/app/context/AuthContext';
 
 export default function ProfilePosts() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    const fetchPosts = async () => {
+      const q = await getUserPosts(user.uid);
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const newPosts = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Post[];
+        setPosts(newPosts);
+      });
+      return unsubscribe;
+    };
+
+    fetchPosts().then(unsubscribe => {
+      return () => unsubscribe();
+    });
+  }, [user?.uid]);
+
+  if (!user) return null;
+
   return (
     <div className="grid grid-cols-3 gap-4">
-      <NewPost />
-      {mockProfilePosts.map((post) => (
-        <div
-          key={post.id}
-          className="aspect-square border-2 border-black rounded-lg overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-        >
-          <img
-            src={post.image}
+
+      {posts.map((post) => (
+        <Link key={post.id} href={`/post/${post.id}`} className="aspect-square">
+          <Image
+            src={post.imageUrl}
             alt={post.caption}
-            className="w-full h-full object-cover"
+            width={300}
+            height={300}
+            className="w-full h-full object-cover rounded-lg border-2 border-black"
           />
-        </div>
+        </Link>
       ))}
     </div>
   );

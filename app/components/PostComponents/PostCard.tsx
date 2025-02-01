@@ -1,12 +1,13 @@
 import { Post } from "@/app/types";
 import { useState } from "react";
 import Link from "next/link";
+import Image from 'next/image';
 
 interface PostCardProps {
   post: Post;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function Post({ post }: PostCardProps) {
   const [isLiked, setIsLiked] = useState(false);
 
   return (
@@ -14,9 +15,11 @@ export default function PostCard({ post }: PostCardProps) {
       {/* Post Header */}
       <div className="flex items-center gap-3 mb-4">
         <Link href={`/profile/${post.userId}`}>
-          <img
-            src={post.userAvatar}
-            alt={post.username}
+          <Image
+            src={post.userAvatar || '/images/default-avatar.png'}
+            alt={post.username || 'User'}
+            width={40}
+            height={40}
             className="w-10 h-10 rounded-full border-2 border-black"
           />
         </Link>
@@ -27,9 +30,11 @@ export default function PostCard({ post }: PostCardProps) {
 
       {/* Post Image */}
       <div className="rounded-lg border-2 border-black overflow-hidden mb-4">
-        <img
-          src={post.imageUrl}
-          alt={post.caption}
+        <Image
+          src={post.imageUrl || '/images/default-post.png'}
+          alt={post.caption || 'Post image'}
+          width={600}
+          height={600}
           className="w-full aspect-square object-cover"
         />
       </div>

@@ -2,13 +2,12 @@ import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 interface ImageUploadProps {
-  image: File | null;
   setImage: (image: File | null) => void;
   previewUrl: string | null;
   setPreviewUrl: (url: string | null) => void;
 }
 
-export default function ImageUpload({ image, setImage, previewUrl, setPreviewUrl }: ImageUploadProps) {
+export default function ImageUpload({ setImage, previewUrl, setPreviewUrl }: ImageUploadProps) {
   const [dragActive, setDragActive] = useState(false);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {

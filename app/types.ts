@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export interface User {
   displayName: string;
   uid: string;
@@ -19,7 +21,7 @@ export interface Post {
   imageUrl: string;
   caption: string;
   likes: number;
-  createdAt: any; // Firestore Timestamp
+  createdAt: Timestamp;
 }
 
 export interface NavbarProps {
