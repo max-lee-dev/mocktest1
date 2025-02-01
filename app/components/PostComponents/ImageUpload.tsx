@@ -58,8 +58,13 @@ export default function ImageUpload({ setImage, previewUrl, setPreviewUrl }: Ima
             className="w-full rounded-xl border border-border"
           />
           <button
-            onClick={() => setPreviewUrl(null)}
-            className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:shadow-lg transition-shadow"
+            onClick={(e) => {
+              e.stopPropagation();
+              setPreviewUrl(null);
+              setImage(null);
+            }}
+            className="absolute top-4 right-4 bg-black text-white p-2 rounded-full shadow-md 
+              hover:bg-gray-800 transition-all duration-200 border-2 border-white"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18" />

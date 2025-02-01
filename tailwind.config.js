@@ -7,9 +7,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        surface: '#F5F5F5',
+        primary: '#FF3040',
+        secondary: '#FFD93D',
+        border: '#2C3333',
+        'text-primary': '#2C3333',
+        'text-secondary': '#78716c',
+        background: '#FFFFFF',
+      },
+      fontFamily: {
+        sans: ['var(--font-lato)'],
       },
     },
   },
   plugins: [],
-} 
+}
